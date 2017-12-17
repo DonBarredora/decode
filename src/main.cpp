@@ -9,9 +9,17 @@
 #include "Shlwapi.h" // for DLLVERSIONINFO2
 #include "str_convert.h"
 
+constexpr static int IDC_EDIT = 0;
+
 LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) {
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case IDC_EDIT:
+		break;
+		}
+	break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 	break;
@@ -126,11 +134,10 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 		return 1;
 	}
 	
-	HMENU edit_identifier = (HMENU)1;
 	int edit_styles = WS_CHILD | WS_TABSTOP | WS_VISIBLE | WS_HSCROLL
 		| WS_VSCROLL | ES_MULTILINE;
 	HWND edit_handle = CreateWindowEx(0, L"EDIT", L"Type here", edit_styles,
-	0, 0, 450, 450, main_window.getHandle(), edit_identifier, hInstance, nullptr);
+	0, 0, 450, 450, main_window.getHandle(), (HMENU)IDC_EDIT, hInstance, nullptr);
 	if (!edit_handle) {
 		std::wcerr << L"Error: couldn't create edit control child.\n";
 		return 1;
